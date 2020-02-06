@@ -1,0 +1,25 @@
+{
+    "shop": [
+        {
+            "id": "shop_central_nihn_bohn_general_store",
+            "name": "General Store",
+            "description": "The general store of Nihn Bohn selling common goods",
+            "items": [
+                "item_health_potion_0",
+                "item_health_potion_1",
+                "item_magic_potion_0",
+                "item_magic_potion_1"
+            ]
+        }, {
+            "id": "shop_central_nihn_bohn_weapon_store",
+            "name": "Nihn Bohn Central Weapons",
+            "description": "Basic weapons sold for the are of Central Nihn Bohn",
+            "items": [
+                "weapon_knife_0",
+                "weapon_sword_0",
+                "weapon_sword_1"
+            ]
+        }
+    ]
+}
+

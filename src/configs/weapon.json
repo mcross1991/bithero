@@ -1,0 +1,41 @@
+{
+    "weapon": {
+        "sword": [
+            {
+                "id": "weapon_sword_0",
+                "name": "Knife",
+                "description": "Dull sknife with inferior damage",
+                "damage": 1.0,
+                "requirements": {
+                    "stats": {
+                        "level": 1,
+                        "strength": 1
+                    }
+                }
+            }, {
+                "id": "weapon_sword_1",
+                "name": "Sword",
+                "description": "Basic sword with moderate damage",
+                "damage": 3.0,
+                "requirements": {
+                    "stats": {
+                        "level": 5,
+                        "strength": 6
+                    }
+                }
+            }, {
+                "id": "weapon_sword_2",
+                "name": "Long Sword",
+                "description": "Advanced sword with decent damage",
+                "damage": 7.0,
+                "requirements": {
+                    "stats": {
+                        "level": 10,
+                        "strength": 12
+                    }
+                }
+            }
+        ]
+    }
+}
+

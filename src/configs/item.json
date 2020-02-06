@@ -1,0 +1,40 @@
+{
+    "item": {
+        "potion": [
+            {
+                "id": "item_health_potion_0",
+                "name": "Health Potion",
+                "description": "A simple potion that restores a small amount of health",
+                "price": 5,
+                "vital_effects": {
+                    "health": 10
+                }
+            }, {
+                "id": "item_health_potion_1",
+                "name": "Strong Health Potion",
+                "description": "A strong potion that restores a moderate amount of health",
+                "price": 10,
+                "vital_effects": {
+                    "health": 25
+                }
+            }, {
+                "id": "item_magic_potion_0",
+                "name": "Magic Potion",
+                "description": "A simple potion that restores a small amount of magic",
+                "price": 5,
+                "vital_effects": {
+                    "health": 10
+                }
+            }, {
+                "id": "item_magic_potion_1",
+                "name": "Magic Potion",
+                "description": "A strong potion that restores a moderate amount of magic",
+                "price": 10,
+                "vital_effects": {
+                    "health": 10
+                }
+            }
+        ]
+    }
+}
+

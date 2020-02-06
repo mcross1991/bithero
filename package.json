@@ -1,0 +1,30 @@
+{
+  "name": "bithero",
+  "version": "1.0.0",
+  "description": "Conquer the bitspace and define yourself as a hero!",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcross1991/bithero.git"
+  },
+  "keywords": [
+    "game",
+    "rpg"
+  ],
+  "author": "Matthew Cross <matthew.cross@machitect.io>",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/mcross1991/bithero/issues"
+  },
+  "homepage": "https://github.com/mcross1991/bithero#readme",
+  "dependencies": {
+    "ws": "^7.2.1"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.1",
+    "utf-8-validate": "^5.0.2"
+  }
+}

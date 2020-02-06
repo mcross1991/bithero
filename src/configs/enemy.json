@@ -1,0 +1,21 @@
+{
+    "enemy": [
+        {
+            "id": "enemy_rat_0",
+            "name": "Rat",
+            "description": "Tiny rodent that scavenges desolate areas",
+            "vitals": {
+                "health": 20,
+                "magic: 0,
+                "energy: 100
+            },
+            "stats": {
+                "strength": 5,
+                "defense": 2,
+                "intelligence": 0,
+                "stamina: 2
+            }
+        }
+    ]
+}
+

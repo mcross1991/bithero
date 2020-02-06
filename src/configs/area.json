@@ -1,0 +1,23 @@
+{
+    "area": {
+        "evelir": [
+            {
+                "id": "area_central_city",
+                "name": "Evelir (Central)",
+                "description": "The central area of Evelir containing trade hubs",
+                "paths": [
+                    "shop_central_elevir_general_store",
+                    "shop_central_elevir_weapon_store"
+                ]
+            }, {
+                "id": "area_eastern_city",
+                "name": "Evelir (Eastern)",
+                "description": "The uninhabited eastern area of Evelir",
+                "enemies": [
+                    "enemy_rat_0"
+                ]
+            }
+        ]
+    }
+}
+
