@@ -6,6 +6,8 @@
                 "name": "Knife",
                 "description": "Dull sknife with inferior damage",
                 "damage": 1.0,
+                "price": 10,
+                "elemental": {},
                 "requirements": {
                     "stats": {
                         "level": 1,
@@ -17,6 +19,8 @@
                 "name": "Sword",
                 "description": "Basic sword with moderate damage",
                 "damage": 3.0,
+                "price": 50,
+                "elemental": {},
                 "requirements": {
                     "stats": {
                         "level": 5,
@@ -28,6 +32,8 @@
                 "name": "Long Sword",
                 "description": "Advanced sword with decent damage",
                 "damage": 7.0,
+                "price": 120,
+                "elemental": {},
                 "requirements": {
                     "stats": {
                         "level": 10,

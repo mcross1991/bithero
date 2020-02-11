@@ -8,8 +8,7 @@ class Spell extends ValueObject {
             'id': 'string',
             'name': 'string',
             'description': 'string',
-            'damage': 'integer',
-            'element': 'string'
+            'damage': 'integer'
         });
     }
 }

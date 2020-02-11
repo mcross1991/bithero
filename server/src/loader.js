@@ -30,7 +30,7 @@ class ResourceLoader {
     loadAllResources() {
         let data = {
             'area': this.loadResourceBatch('area', Area),
-            'weapon': this.loadResourceBath('weapon', Weapon),
+            'weapon': this.loadResourceBatch('weapon', Weapon),
             'spell': this.loadResourceBatch('spell', Spell),
             'item': this.loadResourceBatch('item', Item), 
         };
@@ -45,7 +45,6 @@ class ResourceLoader {
         }
 
         let batch = {};
-
         for (let category in data[key]) {
             batch[category] = {};
 

@@ -5,8 +5,7 @@
                 "id": "spell_blizzard_0",
                 "name": "Blizzard",
                 "description": "Cast a wintry spell onto your enemy",
-                "damage": 5.0,
-                "element": "ice"
+                "damage": 5.0
             }
         ],
         "fire": [
@@ -14,8 +13,7 @@
                 "id": "spell_fire_0",
                 "name": "Fire",
                 "description": "Cast a burning spell onto your enemy",
-                "damage": 5.0,
-                "element": "fire"
+                "damage": 5.0
             }
         ],
         "electricity": [
@@ -23,8 +21,7 @@
                 "id": "spell_lightning_0",
                 "name": "Lightning",
                 "description": "Cast a eletrifying spell onto your enemy",
-                "damage": 5.0,
-                "element": "lightning"
+                "damage": 5.0
             }
         ]
     }

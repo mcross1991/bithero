@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/mcross1991/bithero#readme",
   "dependencies": {
+    "uuid": "^3.4.0",
     "ws": "^7.2.1"
   },
   "optionalDependencies": {
