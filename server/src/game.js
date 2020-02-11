@@ -104,6 +104,7 @@ class Game {
         this.start = this.start.bind(this);
         this.end = this.end.bind(this);
         this.updateState = this.updateState.bind(this);
+        this.broadcastStateToPlayers = this.broadcastStateToPlayers.bind(this);
         this.sendCommand = this.sendCommand.bind(this);
         this.registerSession = this.registerSession.bind(this);
         this.getSession = this.getSession.bind(this);
@@ -112,6 +113,7 @@ class Game {
     start() {
         this.intervalLock = setInterval(() => {
             this.updateState();
+            this.broadcastStateToPlayers();
         }, 100);
     }
 
@@ -127,6 +129,13 @@ class Game {
             this.executor.execute(this.state, sessionConfig.session, nextAction);
 
             sessionConfig.callback(sessionConfig.session);
+        }
+    }
+
+    broadcastStateToPlayers() {
+        for (let id in this.sessions) {
+            let config = this.sessions[id];
+            config.callback(config.session);
         }
     }
 
