@@ -4,14 +4,40 @@ const uuid = require('uuid/v4');
 
 class Session {
 
-    constructor(id, hash, data) {
+    constructor(id, hash) {
         this.id = id;
         this.hash = hash;
-        this.data = data;
+        this.request = null;
+        this.response = null;
+    }
+
+    setRequest(request) {
+        this.request = request;
+    }
+
+    getRequest() {
+        return this.request;
+    }
+
+    setResponse(response) {
+        this.response = response;
+    }
+
+    getResponse() {
+        return this.response;
+    }
+
+    toJSON() {
+        return JSON.stringify({
+            session_id: this.id,
+            session_hash: this.hash,
+            request: this.request,
+            response: this.response
+        });
     }
 }
 
-Session.create = function(data={}) {
+Session.create = function(data=null) {
     return new Session(uuid(), uuid(), data);
 }
 
@@ -48,15 +74,15 @@ class Server {
     onConnectionOpened(ws) {
         let session = Session.create();
 
-        this.game.registerSession(session, (updatedSession) => {
+        this.sessions[session.id] = session;
+
+        this.game.registerConnection(session, (updatedSession) => {
             ws.send(JSON.stringify(updatedSession));
         });
 
-        ws.send(JSON.stringify({
-            action: 'start_session',
-            session_id: session.id,
-            session_hash: session.hash,
-        }));
+        session.setResponse({ action: 'start_session' });
+
+        ws.send(session.toJSON());
     }
 
     onConnectionClosed(ws) {
@@ -64,31 +90,33 @@ class Server {
     }
 
     onMessageReceived(ws, data) {
-        let command = JSON.parse(data);
-        if (!command) {
+        let request = JSON.parse(data);
+        if (!request) {
             ws.send(this.jsonError('Invalid JSON sent to server'));
             return;
         }
 
-        let sessionId = command['session_id'] || null;
+        let sessionId = request['session_id'] || null;
         if (!sessionId) {
             ws.send(this.jsonError('You must supply a session id'));
             return;
         }
 
-        let sessionHash = command['session_hash'] || null;
+        let sessionHash = request['session_hash'] || null;
         if (!sessionHash) {
             ws.send(this.jsonError('You must supply a session hash'));
             return;
         }
 
-        let session = this.game.getSession(sessionId);
+        let session = this.sessions[sessionId];
         if (!session || session.hash != sessionHash) {
             ws.send(this.jsonError(`No session found with id ${sessionId}`));
             return;
         }
 
-        this.game.sendCommand(command);
+        session.setRequest(request);
+
+        this.game.sendCommand(session);
     }
 
     infoMessage(message) {

@@ -10,9 +10,11 @@ ws.addEventListener('open', (event) => {
 ws.addEventListener('message', (event) => {
     let payload = JSON.parse(event.data);
 
-    if (payload['action'] == 'start_session') {
+    let response = payload['response'] || {};
+
+    if (response['action'] == 'start_session') {
         currentSession = payload;
-        console.log(currentSession);
+        console.log(payload);
     }
 
     console.log('Message', event);
@@ -64,5 +66,5 @@ function createEvent(name, session) {
 }
 
 setTimeout(() => {
-    ws.send(createEvent('login_player', currentSession));
+    ws.send(createEvent('register_player', currentSession));
 }, 1000);

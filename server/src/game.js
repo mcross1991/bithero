@@ -98,7 +98,7 @@ class Game {
         this.executor = executor;
         this.queue = new Queue();
         this.state = new GameState(resources);
-        this.sessions = {};
+        this.connections = {};
         this.intervalLock = null;
 
         this.start = this.start.bind(this);
@@ -106,8 +106,7 @@ class Game {
         this.updateState = this.updateState.bind(this);
         this.broadcastStateToPlayers = this.broadcastStateToPlayers.bind(this);
         this.sendCommand = this.sendCommand.bind(this);
-        this.registerSession = this.registerSession.bind(this);
-        this.getSession = this.getSession.bind(this);
+        this.registerConnection = this.registerConnection.bind(this);
     }
 
     start() {
@@ -123,38 +122,32 @@ class Game {
 
     updateState() {
         while (!this.queue.isEmpty()) {
-            let nextAction = this.queue.pop();
-            let sessionConfig = this.sessions[nextAction.session_id];
+            let session = this.queue.pop();
+            let request = session.request;
+            let connection = this.connections[session.id];
 
-            this.executor.execute(this.state, sessionConfig.session, nextAction);
+            this.executor.execute(this.state, session, request);
 
-            sessionConfig.callback(sessionConfig.session);
+            connection.onSessionUpdated(session);
         }
     }
 
     broadcastStateToPlayers() {
-        for (let id in this.sessions) {
-            let config = this.sessions[id];
-            config.callback(config.session);
+        for (let id in this.connections) {
+            let connection = this.connections[id];
+            connection.onSessionUpdated(connection.currentSession);
         }
     }
 
-    sendCommand(command) {
-        this.queue.push(command);
+    sendCommand(session) {
+        this.queue.push(session);
     }
 
-    registerSession(session, callback) {
-        this.sessions[session.id] = {
-            'session': session,
-            'callback': callback
+    registerConnection(session, callback) {
+        this.connections[session.id] = {
+            'currentSession': session,
+            'onSessionUpdated': callback
         };
-    }
-
-    getSession(id) {
-        if (typeof this.sessions[id] == 'undefined') {
-            throw new Error(`Session with id ${id} does not exist`);
-        }
-        return this.sessions[id].session;
     }
 }
 
