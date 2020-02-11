@@ -34,9 +34,8 @@ class Server {
         this.wss = new WebSocket.Server({ port: 8080 });
         this.wss.on('connection', (ws, request) => {
             // request provides user unique info
-            ws.on('open', () => {
-                this.onConnectionOpened(ws);
-            });
+            this.onConnectionOpened(ws);
+
             ws.on('close', () => {
                 this.onConnectionClosed(ws);
             });
@@ -47,11 +46,13 @@ class Server {
     }
 
     onConnectionOpened(ws) {
-        let session = new Session();
+        let session = Session.create();
         this.sessions[session.id] = session;
-        ws.send({
-            session_id: session.id
-        });
+        ws.send(JSON.stringify({
+            session_id: session.id,
+            session_hash: session.hash,
+            action: 'start_session'
+        }));
     }
 
     onConnectionClosed(ws) {
@@ -77,8 +78,8 @@ class Server {
             return;
         }
 
-        let session = Session.create();
-        if (!session) {
+        let session = this.sessions[sessionId];
+        if (!session || session.hash != sessionHash) {
             ws.send(this.jsonError(`No session found with id ${sessionId}`));
             return;
         }
