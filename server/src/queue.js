@@ -13,7 +13,7 @@ class Queue {
         return this.data.pop();
     }
 
-    empty() {
+    isEmpty() {
         return this.data.length == 0;
     }
 }

@@ -5,11 +5,19 @@ const { Server } = require('./server');
 const ResourceLoader = require('./loader');
 
 let availableCommands = {
-    'register_player': function(state, data) {
-        let player = state.registerPlayer(123, data['name']);
-        state.createStateForPlayer(player);
+    'register_player': function(state, session, data) {
+        let player = state.registerPlayer(data['player_id'], data['player_name']);
+        session.data = state.createStateForPlayer(player);
     },
-    'move': function(state, params) {
+    'login_player': function(state, session, data) {
+        let player = state.loginPlayer(data['player_id']);
+        session.data = state.createStateForPlayer(player);
+    },
+    'logout_player': function(state, session, data) {
+        state.logoutPlayer(data['player_id']);
+        delete session.data;
+    },
+    'move': function(state, session, params) {
         let playerId = params['playerId'];
         let player = state.findPlayer(playerId);
         if (!player) {
@@ -30,20 +38,19 @@ class CommandExecutor {
         this.execute = this.execute.bind(this);
     }
 
-    execute(state, command) {
+    execute(state, session, command) {
         switch (command.action) {
             case 'move':
             case 'goto':
-                state = this.commands['move'](state, command.data);
+                state = this.commands['move'](state, session, command.data);
                 break;
             case 'register_player':
-            case 'inspect':
-            case 'speak':
-            case 'attack':
-            case 'cast':
-            case 'skill':
-                state = this.commands[command.action](state, command.data);
+            case 'login_player':
+            case 'logout_player':
+                state = this.commands[command.action](state, session, command.data);
                 break;
+            default:
+                throw new Error(`Invalid command given: ${command.action}`);
         }
     }
 }

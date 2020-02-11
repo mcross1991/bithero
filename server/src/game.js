@@ -49,7 +49,7 @@ class GameState {
     }
 
     savePlayerFile(player) {
-        fs.writeFileSync(this.getPathForData('players', `${player.id}.json`), player.toJSON());
+        fs.writeFileSync(this.getPathForData('players', `${player.data.id}.json`), player.toJSON());
     }
 
     loadPlayerFile(playerId) {
@@ -82,7 +82,7 @@ class GameState {
         let state = {
             player: player,
             otherPlayers: [],
-            area: this.resources.loadResource('area', 'elevir', 'central')
+            area: {}, //this.resources.loadResource('area', 'elevir', 'central')
         };
 
         this.states[player.id] = state;
@@ -98,14 +98,15 @@ class Game {
         this.executor = executor;
         this.queue = new Queue();
         this.state = new GameState(resources);
-        this.onSessionUpdatedCallbackCache = {};
+        this.sessions = {};
         this.intervalLock = null;
 
         this.start = this.start.bind(this);
         this.end = this.end.bind(this);
         this.updateState = this.updateState.bind(this);
         this.sendCommand = this.sendCommand.bind(this);
-        this.onSessionUpdated = this.onSessionUpdated.bind(this);
+        this.registerSession = this.registerSession.bind(this);
+        this.getSession = this.getSession.bind(this);
     }
 
     start() {
@@ -120,18 +121,31 @@ class Game {
 
     updateState() {
         while (!this.queue.isEmpty()) {
-            let data = this.queue.pop();
-            this.executor.execute(this.state, data.command);
-            this.onSessionUpdatedCallbackCache[data.sessionId](updatedSession);
+            let nextAction = this.queue.pop();
+            let sessionConfig = this.sessions[nextAction.session_id];
+
+            this.executor.execute(this.state, sessionConfig.session, nextAction);
+
+            sessionConfig.callback(sessionConfig.session);
         }
     }
 
-    sendCommand(sessionId, command) {
-        this.queue.push({sessionId: sessionId, command: command});
+    sendCommand(command) {
+        this.queue.push(command);
     }
 
-    onSessionUpdated(session, callback) {
-        this.onSessionUpdatedCallbackCache[session.id] = callback;
+    registerSession(session, callback) {
+        this.sessions[session.id] = {
+            'session': session,
+            'callback': callback
+        };
+    }
+
+    getSession(id) {
+        if (typeof this.sessions[id] == 'undefined') {
+            throw new Error(`Session with id ${id} does not exist`);
+        }
+        return this.sessions[id].session;
     }
 }
 

@@ -33,7 +33,6 @@ class Server {
     start() {
         this.wss = new WebSocket.Server({ port: 8080 });
         this.wss.on('connection', (ws, request) => {
-            // request provides user unique info
             this.onConnectionOpened(ws);
 
             ws.on('close', () => {
@@ -43,15 +42,20 @@ class Server {
                 this.onMessageReceived(ws, message);
             });
         });
+        this.game.start();
     }
 
     onConnectionOpened(ws) {
         let session = Session.create();
-        this.sessions[session.id] = session;
+
+        this.game.registerSession(session, (updatedSession) => {
+            ws.send(JSON.stringify(updatedSession));
+        });
+
         ws.send(JSON.stringify({
+            action: 'start_session',
             session_id: session.id,
             session_hash: session.hash,
-            action: 'start_session'
         }));
     }
 
@@ -78,19 +82,13 @@ class Server {
             return;
         }
 
-        let session = this.sessions[sessionId];
+        let session = this.game.getSession(sessionId);
         if (!session || session.hash != sessionHash) {
             ws.send(this.jsonError(`No session found with id ${sessionId}`));
             return;
         }
 
-        this.game.onSessionUpdated(session, (updatedSession) => {
-            ws.send(JSON.stringify(updatedSession));
-        });
-
         this.game.sendCommand(command);
-
-        ws.send(JSON.stringify(session));
     }
 
     infoMessage(message) {
