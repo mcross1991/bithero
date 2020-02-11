@@ -26,6 +26,7 @@ class Server {
         this.onConnectionOpened = this.onConnectionOpened.bind(this);
         this.onConnectionClosed = this.onConnectionClosed.bind(this);
         this.onMessageReceived = this.onMessageReceived.bind(this);
+        this.infoMessage = this.infoMessage.bind(this);
         this.jsonError = this.jsonError.bind(this);
     }
 
@@ -76,7 +77,7 @@ class Server {
             return;
         }
 
-        let session = this.game.getSession(sessionId, sessionHash);
+        let session = Session.create();
         if (!session) {
             ws.send(this.jsonError(`No session found with id ${sessionId}`));
             return;
@@ -89,6 +90,10 @@ class Server {
         this.game.sendCommand(command);
 
         ws.send(JSON.stringify(session));
+    }
+
+    infoMessage(message) {
+        return JSON.stringify({ 'message': message });
     }
 
     jsonError(message) {

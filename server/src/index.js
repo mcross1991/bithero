@@ -45,7 +45,6 @@ class CommandExecutor {
                 state = this.commands[command.action](state, command.data);
                 break;
         }
-        return state;
     }
 }
 

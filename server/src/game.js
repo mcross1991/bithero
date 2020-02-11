@@ -122,7 +122,7 @@ class Game {
         while (!this.queue.isEmpty()) {
             let data = this.queue.pop();
             this.executor.execute(this.state, data.command);
-            this.onSessionUpdatedCallbackCache[data.sessionId]
+            this.onSessionUpdatedCallbackCache[data.sessionId](updatedSession);
         }
     }
 
