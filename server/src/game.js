@@ -24,6 +24,8 @@ class GameState {
 
     loginPlayer(playerId) {
         let player = this.loadPlayerFile(playerId);
+        player.data.lastLoginTime = new Date();
+        player.data.lastActionTime = new Date();
         this.players[player.id] = player;
         return player;
     }
